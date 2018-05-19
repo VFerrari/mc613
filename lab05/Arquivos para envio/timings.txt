@@ -1,0 +1,26 @@
+Delay cla_4bits	       : 7,778 ns
+Delay cla_8bits_partial: 12,744 ns
+Delay cla_8bits	       : 8,902 ns
+
+Comparando o CLA de 4 bits com o equivalente ripple-carry, vimos que o somador CLA é mais rápido,
+com uma diferença de aproximadamente 0,3 ns.
+
+Comparando o CLA de 8 bits "parcial" (dois CLAs de 4 bits em cascata) com o equivalente ripple-carry,
+vimos que o somador CLA é mais rápido, com uma diferença de 0,5 ns entre ambos. Ainda assim, não é
+uma grande melhora.
+
+Comparando o CLA de 8 bits com o equivalente ripple-carry, vimos que o somador CLA é mais rápido,
+com uma diferença de 5 ns entre ambos.
+
+
+O tempo gasto pelo CLA parcial para efetuar a soma é obrigatoriamente maior, pois o CLA dos bits mais
+significativos precisa esperar pela saída carry do CLA dos bits menos significativos para que possa operar.
+Ou seja, os dois componentes estão em cascata e os tempos se somam.
+
+Esses resultados indicam que o somador CLA completo possui um tempo que aumenta em uma progressão de razão
+muito menor do que o ripple-carry, pois naquele o caminho realizado é sempre o mesmo (portas OR e AND).
+A pequena variação temporal vem do aumento do número de bits da entrada nas portas lógicas. Por 
+outro lado, cada full-adder do ripple-carry depende do carry-out da soma anterior, necessitando 
+aproximadamente de tempo linear com o tamanho da entrada para realizar a soma.
+
+É visível que a diferença de tempo entre o CLA e o ripple-carry aumenta rapidamente.

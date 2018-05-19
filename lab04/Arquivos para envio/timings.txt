@@ -1,0 +1,11 @@
+Delay 4: 8.070
+Delay 8: 13.289
+Delay 16: 12.225
+Delay 32: 19.862
+Delay 64: 36.105
+
+O tempo cresce à medida em que aumentamos o tamanho do ripple-carry adder. Houve uma aberração
+entre os circuitos de 8 e 16 bits, pois o programa faz otimizações, o que pode ter reduzido o
+tempo de propagação do sinal. Podemos observar em tamanhos maiores que o tempo cresce de maneira
+proporcional (aproximadamente) ao número de bits, pois o caminho percorrido pelo sinal é maior,
+com mais "full-adders", uma vez que um componente necessita da saída do anterior para o cálculo.

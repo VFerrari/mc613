@@ -1,0 +1,8 @@
+A frequência máxima do clock encontrada pelo Fmax Summary foi de 100,16 MHz.
+Ao analisar o caminho dos dados, percebemos que o caminho tem duração total
+de 9,377 ps.
+
+O caminho crítico ocorre ao sair do banco de registradores, passar pela ALU,
+e retornar ao banco. Assim, os componentes mais lentos são esses: o banco de
+registradores e a ALU. Passa também por um tri-state buffer, mas ao fazer isso
+gasta menos de 0,3 ps. Ainda assim, é parte do caminho crítico.

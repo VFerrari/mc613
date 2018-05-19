@@ -1,0 +1,13 @@
+library ieee;
+use ieee.std_logic_1164.all ; 
+
+package latches_ffs_pack is
+
+	component latch_sr_nand is
+		port(S_n : in std_logic;
+			  R_n : in std_logic;
+		     Qa  : out std_logic;
+		     Qb  : out std_logic);
+	end component;
+
+end package;

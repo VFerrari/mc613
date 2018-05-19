@@ -1,0 +1,10 @@
+Para a implementação da instrução HALT, foi alterada apenas a
+Unidade de Controle do processador. Como o objetivo da instrução
+é prender o programa no ciclo de execução, bastou mudar a máquina
+de estados para não sair do estado desejado.
+
+Assim, se for recebida uma instrução com opcode de três bits mais
+significativos iguais a 011, o estado seguinte da máquina é ele 
+mesmo, ou seja, volta para DECODE, que volta para EX. O programa
+só sai desse estado via sinal externo de "reset", que
+automaticamente já faz PC=0.

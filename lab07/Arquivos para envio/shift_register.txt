@@ -1,0 +1,12 @@
+Na primeira versão do circuito, com o clock dado pelo push button, ele fornece uma borda de subida
+sempre que é pressionado, e uma borda de descida quando solto. Assim, o circuito funciona corretamente
+e sem problemas (seja em carga paralela ou deslocamento).
+
+Na segunda versão, com o clock dado por uma chave, a carga paralela funciona corretamente, colocando o
+valor da entrada par_in na saída assim que ativada a chave. Porém, as operações de shift têm comportamento
+inesperado, visto que parece ser executada várias vezes assim que ativada a chave. É possível ver que
+oferece oscilações perto do momento em que é ativada a chave. Isso se deve ao ruído na transição entre os
+estados lógicos da chave, onde ocorrem oscilações antecedendo o estado final, que são erroneamente
+identificados como bordas de clock.
+
+No push button, isso não ocorre graças a como o hardware foi projetado.

@@ -1,0 +1,19 @@
+Para a nova instrução, não foi preciso alterar a unidade de controle, 
+pois os 3 bits mais significativos já estavam tratados pela unidade,
+como um tipo de instrução específico (que utiliza a ALU). Basta, então,
+alterar a ALU, e modificar a estrutura geral de dados do processador
+para permitir a obtenção do imediato.
+
+Na ALU, houve a necessidade de alterar a entidade, adicionando mais uma
+entrada, que é o imediato a ser somado ao registrador. Essa entrada vem
+do registrador IR, que armazena a instrução lida da I-Memory (com opcode,
+registrador e imediato, o último sendo redirecionado para a ALU). O opcode
+também foi modificado, agora tendo 3 bits, em vez de 2. Essa nova entrada
+foi adicionada na lista de sensibilidade do processo.
+
+No código da ALU, foi necessário adicionar um novo "case" correspondente 
+ao opcode do ADDI. Também foi preciso converter o número de 16 bits (imediato)
+para 32 bits (signed), concatenando 0s ou 1s dependendo do sinal. Nesse novo
+case, a mesma operação de soma dos outros foi feito, já que modificamos apenas
+uma das variáveis usadas no processo.
+
