@@ -1,13 +1,13 @@
 library ieee ; 
 use ieee.std_logic_1164.all ; 
 
-entity counter_1 is
+entity cont_1 is
 port (X : in std_logic_vector(1 to 10) ; 
 		Count : out integer range 0 to 10) ; 
-end counter_1 ; 
+end cont_1 ; 
 
 
-architecture Behavior of counter_1 is
+architecture Behavior of cont_1 is
 begin
 
 process(X) 
