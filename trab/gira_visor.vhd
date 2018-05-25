@@ -27,10 +27,14 @@ begin
 	DIV1: clk_div generic map (99999999) port map(clk , sos , clk_2seg);
 	DIV2: clk_div generic map (4999999) port map(clk , '1', clk_1dseg);
 	
-	process(clk_2seg)
+	process(clk_2seg, clk)
 	begin
-		if (rising_edge(clk_2seg)) then
-			gira_stop <= '1';
+		if (rising_edge(clk)) then
+			if(clk_2seg = '1') then
+				gira_stop <= '1';
+			else
+				gira_stop <= '0';
+			end if;
 		end if;
 	end process;
 	
