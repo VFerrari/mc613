@@ -28,7 +28,8 @@ begin
 							 "000" when others;
 							 
 	with quant select
-		display 		 <= "1111001" when "000001",
+		display 		 <= "1111111" when "000000",
+							 "1111001" when "000001",
 							 "0100100" when "000010",
 							 "0110000" when "000100",
 							 "0011001" when "001000",

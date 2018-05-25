@@ -33,5 +33,10 @@ begin
 	--fim: final port map(CLOCK_50, secao(2), not(KEY(0)), );
 	
 	HEX0 <= disp_ini when secao(0) = '1' else "1111111";
+	HEX1 <= "1111111";
+	HEX2 <= "1111111";
+	HEX3 <= "1111111";
+	HEX4 <= "1111111";
+	HEX5 <= "1111111";
 	
 end logica;
