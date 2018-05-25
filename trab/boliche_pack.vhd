@@ -10,7 +10,7 @@ package boliche_pack is
 				fim 		 :out std_logic;
 				n_jog		 :out std_logic_vector(2 downto 0);
 				display   :out std_logic_vector(6 downto 0)
-		);
+		     );
 	end component;
 	
 	component controle is
@@ -29,4 +29,14 @@ package boliche_pack is
 			   clk_lento : out std_logic
 		     );
 	end component;
+	
+	component gira_visor is
+		port (clk		: in std_logic;
+				strike	: in std_logic;
+				spare		: in std_logic;
+				gira_stop: out std_logic;
+				seg_gira : out std_logic_vector(6 downto 0)
+			  );
+	end component;
+	
 end package;
