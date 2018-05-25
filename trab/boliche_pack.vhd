@@ -20,4 +20,13 @@ package boliche_pack is
 			  z    : out std_logic_vector(2 downto 0)
 			 );
 	end component;
+	
+	component clk_div is
+		generic(DIVISOR: natural  := 49999999
+				  );
+		port (clk 		 : in std_logic;
+			   en  		 : in std_logic;
+			   clk_lento : out std_logic
+		     );
+	end component;
 end package;
