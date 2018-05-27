@@ -22,11 +22,7 @@ begin
 	process(clk)
 	begin
 		if (rising_edge(clk)) then
-			if (reset = '1') then
-				troca <= '1';
-			else 
-				troca <= w;
-			end if;
+			troca <= reset or w;
 		end if;
 	end process;
 	

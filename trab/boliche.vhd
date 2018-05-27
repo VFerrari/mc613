@@ -37,17 +37,14 @@ begin
 	
 	ini: inicializador port map(CLOCK_50, secao(0), not(KEY(3)), SW(6 downto 1), fim_ini, n_jog, disp_ini);
 	--meio: andamento port map(CLOCK_50, secao(1), not (KEY(0)), SW);
-	fim: final port map(CLOCK_50, secao(1), not(KEY(0)), n_jog, jogs, pontos, pontos_d, LEDR(0), disp_jog_fim);
+	fim: final port map(CLOCK_50, secao(1), not(KEY(0)), n_jog, jogs, pontos, pontos_d, disp_jog_fim);
 	
-	HEX0 <= pontos_d(2) when secao(0) = '0' else disp_ini when secao(0) = '1' else "1111111";
-	HEX1 <= pontos_d(1) when secao(0) = '0' else "1111111";
-	HEX2 <= pontos_d(0) when secao(0) = '0' else "1111111";
+	HEX0 <= pontos_d(2) when secao(1) = '1' else disp_ini when secao(0) = '1' else "1111111";
+	HEX1 <= pontos_d(1) when secao(1) = '1' else "1111111";
+	HEX2 <= pontos_d(0) when secao(1) = '1' else "1111111";
 	HEX3 <= "1111111";
 	HEX4 <= "1111111";
-	HEX5 <= disp_jog_fim when secao(0) = '0' else "1111111";
+	HEX5 <= disp_jog_fim when secao(1) = '1' else "1111111";
 	
-	LEDR(9) <= secao(0);
-	LEDR(8) <= secao(1);
-	LEDR(7) <= secao(2);
 	
 end logica;

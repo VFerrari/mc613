@@ -22,7 +22,6 @@ package boliche_pack is
 		  jogs		  : in vetor_jogs;
 		  pontos      : in vetor_pontos;
 		  disp_pontos : out vetor_disp;
-		  teste		  : out std_logic;
 		  disp_jog    : out std_logic_vector(6 downto 0)
 		 );
 	end component;

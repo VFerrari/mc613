@@ -12,7 +12,6 @@ entity final is
 		  jogs		  : in vetor_jogs;
 		  pontos      : in vetor_pontos;
 		  disp_pontos : out vetor_disp;
-		  teste       : out std_logic;
 		  disp_jog    : out std_logic_vector(6 downto 0)
 		 );
 end final;
@@ -31,8 +30,7 @@ signal indice       : natural range 0 to 6;
 
 begin
 
-	timing : clk_div generic map (49999999) port map(clock, enable, muda_placar);
-	teste <= muda_placar;
+	timing : clk_div generic map (119999999) port map(clock, enable, muda_placar);
 	ordem  : jogadores port map(clock, reset, muda_placar, n_jog, lixo, jog_atual);
 	
 	indice <= to_integer(unsigned(jog_atual) - 1);

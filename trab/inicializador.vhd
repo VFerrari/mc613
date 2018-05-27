@@ -47,9 +47,7 @@ begin
 				fim <= '1';
 			
 			else
-				n_jog <= "000";
-				fim <= '0';
-				
+				fim <= '0';				
 			end if;
 		end if;
 	end process;

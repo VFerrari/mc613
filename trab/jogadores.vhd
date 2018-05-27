@@ -16,64 +16,63 @@ architecture estados of jogadores is
 type State_type is (jog1, jog2, jog3, jog4, jog5, jog6);
 signal estado : State_type := jog1;
 
+signal ativar: std_logic;
+
 begin
 
 	process(clk)
 	begin
 		if (rising_edge(clk)) then
+			ativar <= troca or reset;
+		end if;
+	
+	end process;
+
+	process(ativar)
+	begin
+		if (rising_edge(ativar)) then
 			if (reset = '1') then
 				estado <= jog1;
 			else
 				case estado is
 				when jog1 =>
-					if (troca = '1') then
-						if (n_jog > "001") then
-							estado <= jog2;
-						else
-							estado <= jog1;
-						end if;
+					if (n_jog > "001") then
+						estado <= jog2;
+					else
+						estado <= jog1;
 					end if;
-					
+				
 				when jog2 =>
-					if (troca = '1') then
-						if (n_jog > "010") then
-							estado <= jog3;
-						else
-							estado <= jog1;
-						end if;
+					if (n_jog > "010") then
+						estado <= jog3;
+					else
+						estado <= jog1;
 					end if;
 				
 				when jog3 =>
-					if (troca = '1') then
-						if (n_jog > "011") then
-							estado <= jog4;
-						else
-							estado <= jog1;
-						end if;
+					if (n_jog > "011") then
+						estado <= jog4;
+					else
+						estado <= jog1;
 					end if;
 				
 				when jog4 =>
-					if (troca = '1') then
-						if (n_jog > "100") then
-							estado <= jog5;
-						else
-							estado <= jog1;
-						end if;
+					if (n_jog > "100") then
+						estado <= jog5;
+					else
+						estado <= jog1;
 					end if;
 					
 				when jog5 =>
-					if (troca = '1') then
-						if (n_jog > "101") then
-							estado <= jog6;
-						else
-							estado <= jog1;
-						end if;
+					if (n_jog > "101") then
+						estado <= jog6;
+					else
+						estado <= jog1;
 					end if;
 				
 				when jog6 =>
-					if (troca = '1') then
-						estado <= jog1;
-					end if;
+					estado <= jog1;
+				
 				end case;
 			end if;
 		end if;
