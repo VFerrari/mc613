@@ -26,6 +26,14 @@ package boliche_pack is
 		 );
 	end component;
 	
+	component ordena is
+	port (clk  : in std_logic; 
+			pontos_jogs : in vetor_pontos;
+			pontos_pos  : out vetor_pontos;
+			jogs_pos    : out vetor_jogs
+			);
+	end component; 
+	
 	component controle is
 		port(clk  : in std_logic;
 			  reset: in std_logic;
