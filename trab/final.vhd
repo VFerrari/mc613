@@ -2,6 +2,7 @@ library ieee ;
 use ieee.std_logic_1164.all ;
 use ieee.numeric_std.all; 
 use work.boliche_pack.all;
+use work.boliche_tipos.all;
 
 entity final is
 	port(clock       : in std_logic;
@@ -11,7 +12,8 @@ entity final is
 		  jogs		  : in vetor_jogs;
 		  pontos      : in vetor_pontos;
 		  disp_pontos : out vetor_disp;
-		  disp_jog    : out std_logic_vector(6 downto 0);
+		  teste       : out std_logic;
+		  disp_jog    : out std_logic_vector(6 downto 0)
 		 );
 end final;
 
@@ -25,16 +27,21 @@ signal jog_pontos	  : std_logic_vector(2 downto 0);
 signal pontos_atuais: std_logic_vector(8 downto 0); 
 signal pontos_bcd   : std_logic_vector(11 downto 0);
 
+signal indice       : natural range 0 to 6;
+
 begin
 
-	timing : clk_div generic map (149999999) port map(clock, enable, muda_placar);
+	timing : clk_div generic map (49999999) port map(clock, enable, muda_placar);
+	teste <= muda_placar;
 	ordem  : jogadores port map(clock, reset, muda_placar, n_jog, lixo, jog_atual);
 	
-	pontos_atuais <= pontos(to_integer(jog_atual)-1);
-	jog_pontos <= jogs(to_integer(jog_atual)-1);
+	indice <= to_integer(unsigned(jog_atual) - 1);
+	
+	pontos_atuais <= pontos(indice);
+	jog_pontos <= jogs(indice);
 
-	bcd				: conversor_bcd port map(pontos_atuais, pontos_bcd);    
-	jog				: bin2dec port map(jog_pontos, disp_jog); 
+	bcd				: conversor_bcd port map(clock, reset, ("000" & pontos_atuais), pontos_bcd);    
+	jog				: bin2dec port map('0' & jog_pontos, disp_jog); 
 	pont_menos_sig : bin2dec port map(pontos_bcd(3 downto 0), disp_pontos(2));
 	pont_meio_sig  : bin2dec port map(pontos_bcd(7 downto 4), disp_pontos(1));
 	pont_mais_sig  : bin2dec port map(pontos_bcd(11 downto 8), disp_pontos(0)); 

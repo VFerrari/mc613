@@ -15,25 +15,34 @@ architecture comportamento of controle is
 type State_type is (inicio, meio, fim);
 signal estado : State_type := inicio;
 
+signal troca : std_logic;
+
 begin
 
 	process(clk)
 	begin
 		if (rising_edge(clk)) then
 			if (reset = '1') then
+				troca <= '1';
+			else 
+				troca <= w;
+			end if;
+		end if;
+	end process;
+	
+	process(troca)
+	begin
+		if (rising_edge(troca)) then
+			if (reset = '1') then
 				estado <= inicio;
 			else
 				case estado is
 				when inicio =>
-					if (w = '1') then
-						estado <= meio;
-					end if;
-					
+					estado <= meio;
+				
 				when meio =>
-					if (w = '1') then
-						estado <= fim;
-					end if;
-					
+					estado <= fim;
+				
 				when fim =>
 					estado <= fim;
 				end case;

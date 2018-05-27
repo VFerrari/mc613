@@ -17,7 +17,7 @@ begin
 	process(clk)
 		variable contador : natural := 0;
 	begin
-		if (clk'event and clk='1') then
+		if (rising_edge(clk)) then
 			if(en = '1') then
 				if (contador = DIVISOR) then
 					clk_lento <= '1';

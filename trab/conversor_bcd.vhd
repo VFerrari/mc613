@@ -35,7 +35,7 @@ begin
             estado <= inicia;
             bcds_out_reg <= (others => '0');
             shift_cont <= 0;
-        elsif (falling_edge(clk)) then
+        elsif (rising_edge(clk)) then
             binario <= binario_prox;
             bcds <= bcds_prox;
             estado <= estado_prox;
