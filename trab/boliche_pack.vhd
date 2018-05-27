@@ -77,4 +77,10 @@ package boliche_pack is
     );
 	end component ;
 	
+	component cont_1 is
+		port (X 		: in std_logic_vector(1 to 10) ; 
+				Count : out std_logic_vector(3 downto 0)
+		); 
+	end component ; 
+	
 end package;
