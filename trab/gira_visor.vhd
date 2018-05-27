@@ -25,7 +25,7 @@ begin
 	sos <= strike or spare;
 	
 	DIV1: clk_div generic map (99999999) port map(clk , sos , clk_2seg);
-	DIV2: clk_div generic map (4999999) port map(clk , '1', clk_1dseg);
+	DIV2: clk_div generic map (3500000) port map(clk , '1', clk_1dseg);
 	
 	process(clk_2seg, clk)
 	begin
