@@ -1,5 +1,6 @@
-library ieee ; 
-use ieee.std_logic_1164.all ; 
+library ieee; 
+use ieee.std_logic_1164.all; 
+use work.boliche_tipos.all;
 
 package boliche_pack is
 	component inicializador is
@@ -13,11 +14,33 @@ package boliche_pack is
 		     );
 	end component;
 	
+	component final is
+	port(clock       : in std_logic;
+		  enable      : in std_logic;
+		  reset       : in std_logic;
+		  n_jog       : in std_logic_vector(2 downto 0);
+		  jogs		  : in vetor_jogs;
+		  pontos      : in vetor_pontos;
+		  disp_pontos : out vetor_disp;
+		  disp_jog    : out std_logic_vector(6 downto 0);
+		 );
+	end component;
+	
 	component controle is
 		port(clk  : in std_logic;
 			  reset: in std_logic;
 			  w    : in std_logic;
 			  z    : out std_logic_vector(2 downto 0)
+			 );
+	end component;
+	
+	component jogadores is
+		port(clk   : in std_logic;
+			  reset : in std_logic;
+			  troca : in std_logic;
+			  n_jog : in std_logic_vector(2 downto 0);
+			  comeco: out std_logic;
+			  jog_at: out std_logic_vector(2 downto 0)
 			 );
 	end component;
 	
@@ -38,5 +61,19 @@ package boliche_pack is
 				seg_gira : out std_logic_vector(6 downto 0)
 			  );
 	end component;
+	
+	component bin2dec is
+		port(bin: in std_logic_vector(3 downto 0);
+			  dec: out std_logic_vector(6 downto 0)
+			 );
+	end component;
+
+	component conversor_bcd is
+    port(clk  	    : in std_logic;
+		   reset		 : in std_logic;
+         binario_in: in std_logic_vector(11 downto 0);
+         bcd		 : out std_logic_vector(11 downto 0)
+    );
+	end component ;
 	
 end package;
