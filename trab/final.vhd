@@ -1,6 +1,6 @@
 library ieee ; 
 use ieee.std_logic_1164.all ;
-
+use ieee.numeric_std.all; 
 use work.boliche_pack.all;
 
 entity final is
@@ -8,16 +8,10 @@ entity final is
 		  enable      : in std_logic;
 		  reset       : in std_logic;
 		  n_jog       : in std_logic_vector(2 downto 0);
-		  pontos_1    : in std_logic_vector(8 downto 0);
-		  pontos_2    : in std_logic_vector(8 downto 0);
-		  pontos_3    : in std_logic_vector(8 downto 0);
-		  pontos_4    : in std_logic_vector(8 downto 0);
-		  pontos_5    : in std_logic_vector(8 downto 0);
-		  pontos_6    : in std_logic_vector(8 downto 0);
+		  jogs		  : in vetor_jogs;
+		  pontos      : in vetor_pontos;
+		  disp_pontos : out vetor_disp;
 		  disp_jog    : out std_logic_vector(6 downto 0);
-		  disp_pontos1: out std_logic_vector(6 downto 0);
-		  disp_pontos2: out std_logic_vector(6 downto 0);
-		  disp_pontos3: out std_logic_vector(6 downto 0);
 		 );
 end final;
 
@@ -36,18 +30,13 @@ begin
 	timing : clk_div generic map (149999999) port map(clock, enable, muda_placar);
 	ordem  : jogadores port map(clock, reset, muda_placar, n_jog, lixo, jog_atual);
 	
-	with jog_atual select
-		pontos_atuais <= pontos_1 when "001",
-							  pontos_2 when "010",
-							  pontos_3 when "011",
-							  pontos_4 when "100",
-							  pontos_5 when "101",
-							  pontos_6 when others;
+	pontos_atuais <= pontos(to_integer(jog_atual)-1);
+	jog_pontos <= jogs(to_integer(jog_atual)-1);
 
-	with jog_atual select
-	jog	 : bin2dec port map(jog_atual, disp_jog); 
-	pont_menos_sig : bin2dec port map(pontos_bcd(3 downto 0), disp_pontos1);
-	pont_meio_sig  : bin2dec port map(pontos_bcd(7 downto 4), disp_pontos2);
-	pont_mais_sig  : bin2dec port map(pontos_bcd(11 downto 8), disp_pontos3); 
+	bcd				: conversor_bcd port map(pontos_atuais, pontos_bcd);    
+	jog				: bin2dec port map(jog_pontos, disp_jog); 
+	pont_menos_sig : bin2dec port map(pontos_bcd(3 downto 0), disp_pontos(2));
+	pont_meio_sig  : bin2dec port map(pontos_bcd(7 downto 4), disp_pontos(1));
+	pont_mais_sig  : bin2dec port map(pontos_bcd(11 downto 8), disp_pontos(0)); 
 
 end placar;
