@@ -21,56 +21,61 @@ architecture comportamento of rodada is
 type State_type is (primeira, segunda);
 signal estado : State_type := primeira;
 signal ativar : std_logic;
-signal pinos_buff : std_logic_vector(9 downto 0);
+signal pinos_buff : std_logic_vector(9 downto 0) := "0000000000";
 
 begin
-
-	ativar <= clk and arremesso;
-
+		
+	process(clk)
+	begin
+		if(rising_edge(clk)) then
+			ativar <= reset or arremesso;
+		end if;
+	end process;
+		
 	process(ativar)
 	begin
 		if (rising_edge(ativar)) then
-			case estado is
-			when primeira =>
-			
-				pinos_buff <= pinos;
-				if (pinos_buff /= "1111111111") then
+			if(reset = '1') then
+				strike <= '0';
+				spare <= '0';
+				pinos_buff <= "0000000000";
+				estado <= primeira;
+			else
+				case estado is
+				when primeira =>
+				
+					pinos_buff <= pinos;
+					if (pinos = "1111111111") then
+						
+						strike <= '1';
+						spare <= '0';
+						estado <= primeira;
+					else
+						strike <= '0';
+						spare <= '0';
+						estado <= segunda;
+					end if;
+					
+				when segunda =>
+					pinos_buff <= pinos;
+					if (pinos = "1111111111") then
+						spare <= '1';
+					else 
+						spare <= '0';
+					end if;
 					
 					strike <= '0';
-					spare <= '0';
-					jogada <= "10";
-					acabou <= '0';
-					estado <= segunda;
-					
-				else
-					strike <= '1';
-					spare <= '0';
-					jogada <= "01";
-					acabou <= '1';
 					estado <= primeira;
 					
-				end if;
-				
-			when segunda =>
-				pinos_buff <= pinos_buff or pinos;
-				
-				if (pinos_buff = "1111111111") then
-					spare <= '1';
-				else 
-					spare <= '0';
-				end if;
-				
-				strike <= '0';
-				jogada <= "01";
-				acabou <= '1';
-				estado <= primeira;
-				
-			end case;
-			
+				end case;
+			end if;
 		end if;
 	end process;
+	
+	jogada <= "10" when (estado = segunda and reset = '0') else "01";
+	acabou <= ativar when (estado = primeira and reset = '0') else '0';
 	
 	C1: cont_1 port map (pinos_buff , pontos);
 	
 
-end comportamento;
+end comportamento; 	
