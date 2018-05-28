@@ -52,6 +52,15 @@ package boliche_pack is
 			 );
 	end component;
 	
+	component turnos is
+	port(clk 		 : in std_logic;
+		  reset		 : in std_logic;
+		  fim_turno  : in std_logic;
+		  turno_atual: out std_logic_vector(3 downto 0);
+		  fim_partida: out std_logic
+		 );
+	end component;
+	
 	component clk_div is
 		generic(DIVISOR: natural  := 49999999
 				  );

@@ -1,5 +1,6 @@
 library ieee ; 
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 use work.boliche_pack.all;
 use work.boliche_tipos.all;
 
@@ -50,5 +51,6 @@ begin
 	HEX4 <= "1111111";
 	HEX5 <= disp_jog_fim when secao(1) = '1' else "1111111";
 	
+	LEDR(to_integer(unsigned(jogs(0)))) <= '1' when secao(1) = '1' else '0';
 	
 end logica;
