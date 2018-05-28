@@ -7,7 +7,6 @@ port (clk    : in std_logic;
 		reset  : in std_logic;
 		arremesso : in std_logic;
 		pinos  : in std_logic_vector(9 downto 0);
-		turno  : in std_logic_vector(3 downto 0);
 		jogada : out std_logic_vector(1 downto 0);
 		pontos1 : out std_logic_vector(3 downto 0);
 		pontos2 : out std_logic_vector(3 downto 0);

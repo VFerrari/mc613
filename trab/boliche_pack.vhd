@@ -27,7 +27,7 @@ package boliche_pack is
 	end component;
 	
 	component ordena is
-	port (clk  : in std_logic; 
+	port (clk 		   : in std_logic; 
 			pontos_jogs : in vetor_pontos;
 			pontos_pos  : out vetor_pontos;
 			jogs_pos    : out vetor_jogs
@@ -95,6 +95,50 @@ package boliche_pack is
 		port (X 		: in std_logic_vector(1 to 10) ; 
 				Count : out std_logic_vector(3 downto 0)
 		); 
-	end component ; 
+	end component ;
+	
+	component calcula_pontos is
+		port (clk    		: in std_logic;
+				enable      : in std_logic;
+				reset 		: in std_logic;
+				botao       : in std_logic;
+				pinos       : in std_logic_vector(9 downto 0);
+				turno       : in std_logic_vector(3 downto 0);
+				jog_atual	: in std_logic_vector(2 downto 0);
+				pontos_jog	: out std_logic_vector(8 downto 0);
+				jogada_at 	: out std_logic_vector(1 downto 0);
+				acabou 		: out std_logic
+			  );
+	end component;
+	
+	component rodada is
+		port (clk    	 : in std_logic;
+				reset 	 : in std_logic;
+				arremesso : in std_logic;
+				pinos  	 : in std_logic_vector(9 downto 0);
+				jogada    : out std_logic_vector(1 downto 0);
+				pontos1 	 : out std_logic_vector(3 downto 0);
+				pontos2   : out std_logic_vector(3 downto 0);
+				strike    : out std_logic;
+				spare     : out std_logic;
+				acabou 	 : out std_logic
+			  );
+	end component;
+	
+	component rodada_spec is
+		port (clk    	 : in std_logic;
+				reset  	 : in std_logic;
+				enable 	 : in std_logic;
+				arremesso : in std_logic;
+				pinos  	 : in std_logic_vector(9 downto 0);
+				jogada 	 : out std_logic_vector(1 downto 0);
+				pontos1 	 : out std_logic_vector(3 downto 0);
+				pontos2 	 : out std_logic_vector(3 downto 0);
+				pontos3 	 : out std_logic_vector(3 downto 0);
+				strikes 	 : out std_logic_vector(1 to 3);
+				spares  	 : out std_logic_vector(2 to 3);
+				acabou 	 : out std_logic
+			  );
+	end component;
 	
 end package;
