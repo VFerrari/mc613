@@ -16,13 +16,13 @@ package boliche_pack is
 	
 	component andamento is
 		port(clk    		: in std_logic;
-			  reset  		: in std_logic;
 			  enable 		: in std_logic;
+			  reset  		: in std_logic;
 			  botao  		: in std_logic;
 			  n_jog  		: in std_logic_vector(2 downto 0);
 			  pinos  		: in std_logic_vector(9 downto 0);
 			  pontos_atuais: out vetor_disp;
-			  jogador_atual: out std_logic_vector(2 downto 0);
+			  jogador_atual: out std_logic_vector(6 downto 0);
 			  turno_atual  : out std_logic_vector(6 downto 0);
 			  jogada_atual : out std_logic_vector(6 downto 0);
 			  pontos 		: out vetor_pontos;
@@ -129,6 +129,7 @@ package boliche_pack is
 	
 	component rodada is
 		port (clk    	 : in std_logic;
+				enable    : in std_logic;
 				reset 	 : in std_logic;
 				arremesso : in std_logic;
 				pinos  	 : in std_logic_vector(9 downto 0);

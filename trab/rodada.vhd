@@ -5,6 +5,7 @@ use work.boliche_pack.all;
 entity rodada is
 port (clk    : in std_logic;
 		reset  : in std_logic;
+		enable : in std_logic;
 		arremesso : in std_logic;
 		pinos  : in std_logic_vector(9 downto 0);
 		jogada : out std_logic_vector(1 downto 0);
@@ -24,6 +25,8 @@ signal ativar : std_logic;
 signal pinos_1 : std_logic_vector(9 downto 0) := "0000000000";
 signal pinos_2 : std_logic_vector(9 downto 0) := "0000000000";
 
+signal pinos_cont_2 : std_logic_vector(9 downto 0) := "0000000000";
+
 begin
 		
 	process(clk)
@@ -42,7 +45,7 @@ begin
 				pinos_1 <= "0000000000";
 				pinos_2 <= "0000000000";
 				estado <= primeira;
-			else
+			elsif (enable = '1') then
 				case estado is
 				when primeira =>
 				
@@ -75,10 +78,12 @@ begin
 	end process;
 	
 	jogada <= "10" when (estado = segunda and reset = '0') else "01";
-	acabou <= ativar when (estado = primeira and reset = '0') else '0';
+	acabou <= ativar when (estado = primeira and reset = '0' and enable = '1') else '0';
+	
+	pinos_cont_2 <= "0000000000" when (estado = segunda or pinos_1 = "1111111111") else (pinos_2 xor pinos_1);
 	
 	C1: cont_1 port map (pinos_1 , pontos1);
-	C2: cont_1 port map ((pinos_2 xor pinos_1) , pontos2);
+	C2: cont_1 port map (pinos_cont_2 , pontos2);
 	
 
 end comportamento; 	

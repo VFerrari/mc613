@@ -6,13 +6,13 @@ use work.boliche_tipos.all;
 
 entity andamento is
 	port(clk    		: in std_logic;
-		  reset  		: in std_logic;
 		  enable 		: in std_logic;
+		  reset  		: in std_logic;
 		  botao  		: in std_logic;
 		  n_jog  		: in std_logic_vector(2 downto 0);
 		  pinos  		: in std_logic_vector(9 downto 0);
 		  pontos_atuais: out vetor_disp;
-		  jogador_atual: out std_logic_vector(2 downto 0);
+		  jogador_atual: out std_logic_vector(6 downto 0);
 		  turno_atual  : out std_logic_vector(6 downto 0);
 		  jogada_atual : out std_logic_vector(6 downto 0);
   		  pontos 		: out vetor_pontos;
@@ -31,7 +31,7 @@ signal pontos_bcd  : std_logic_vector(11 downto 0);
 signal fim_turno   : std_logic := '1';
 signal turno_at    : std_logic_vector (3 downto 0);
 signal jogador_at	 : std_logic_vector (2 downto 0);
-signal jogada_at   : std_logic_vector (2 downto 0);
+signal jogada_at   : std_logic_vector (1 downto 0);
 signal prox_jog    : std_logic := '0';
 
 begin
@@ -43,26 +43,23 @@ begin
 		if (rising_edge(clk)) then
 			if (reset = '1') then
 				pontos_jogo <= (others => (others => '0'));
-				pontos_bcd <= (others => '0');
-			elsif (enable = '0') then
-				prox_jog <= '0';
 			end if;
 		end if;
 	end process;
 	
 	--Logica geral
-	
+	logica : calcula_pontos port map(clk, enable, reset, botao, pinos, turno_at, jogador_at, pontos_jogo(to_integer(unsigned(jogador_at))), jogada_at, prox_jog);
 	
 	--Saidas
-	bcd_pontos: conversor_bcd port map (pontos_jogo(to_integer(unsigned(jogador_at))-1), pontos_bcd);
+	bcd_pontos: conversor_bcd port map (pontos_jogo(to_integer(unsigned(jogador_at))), pontos_bcd);
 	G1: for i in 0 to 2 generate
 		disp_pontos : bin2dec port map (pontos_bcd(i+3 downto i), pontos_atuais(i));
 	end generate;
 	
 	disp_turno : bin2dec port map(turno_at, turno_atual);
-	disp_jogada: bin2dec port map(jogada_at, jogada_atual);
+	disp_jogada: bin2dec port map("00" & jogada_at, jogada_atual);
+	disp_jogador: bin2dec port map('0' & jogador_at, jogador_atual);
 	
-	jogador_atual <= jogador_at;
 	pontos <= pontos_jogo;
 	
 end jogo;

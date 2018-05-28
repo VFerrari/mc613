@@ -27,7 +27,6 @@ signal ativar : std_logic;
 signal pinos_1 : std_logic_vector(9 downto 0) := "0000000000";
 signal pinos_2 : std_logic_vector(9 downto 0) := "0000000000";
 signal pinos_3 : std_logic_vector(9 downto 0) := "0000000000";
-signal pinos_cont_1 : std_logic_vector(9 downto 0) := "0000000000";
 signal pinos_cont_2 : std_logic_vector(9 downto 0) := "0000000000";
 signal pinos_cont_3 : std_logic_vector(9 downto 0) := "0000000000";
 

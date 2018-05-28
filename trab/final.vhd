@@ -33,7 +33,7 @@ begin
 	timing : clk_div generic map (119999999) port map(clock, enable, muda_placar);
 	ordem  : jogadores port map(clock, reset, muda_placar, n_jog, lixo, jog_atual);
 	
-	indice <= to_integer(unsigned(jog_atual) - 1);
+	indice <= to_integer(unsigned(jog_atual));
 	
 	pontos_atuais <= pontos(indice);
 	jog_pontos <= jogs(indice);
