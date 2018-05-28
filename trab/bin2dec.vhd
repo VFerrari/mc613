@@ -21,5 +21,6 @@ begin
 				  "1111000" when "0111",
 				  "0000000" when "1000",
 				  "0010000" when "1001",
+				  "0001000" when "1010",
 				  "1111111" when others ;
 end Behavior;

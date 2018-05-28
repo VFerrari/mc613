@@ -38,7 +38,7 @@ begin
 	pontos_atuais <= pontos(indice);
 	jog_pontos <= jogs(indice);
 
-	bcd				: conversor_bcd port map(clock, reset, ("000" & pontos_atuais), pontos_bcd);    
+	bcd				: conversor_bcd port map(pontos_atuais, pontos_bcd);    
 	jog				: bin2dec port map('0' & jog_pontos, disp_jog); 
 	pont_menos_sig : bin2dec port map(pontos_bcd(3 downto 0), disp_pontos(2));
 	pont_meio_sig  : bin2dec port map(pontos_bcd(7 downto 4), disp_pontos(1));

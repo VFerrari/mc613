@@ -86,9 +86,7 @@ package boliche_pack is
 	end component;
 
 	component conversor_bcd is
-    port(clk  	    : in std_logic;
-		   reset		 : in std_logic;
-         binario_in: in std_logic_vector(11 downto 0);
+    port(binario_in: in std_logic_vector(8 downto 0);
          bcd		 : out std_logic_vector(11 downto 0)
     );
 	end component ;
