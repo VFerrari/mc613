@@ -47,7 +47,7 @@ begin
 
 	norm: rodada port map  (clk , 
 									reset,
-									enable,
+									enable, 
 									botao , 
 									pinos , 
 									jogada_at_norm , 
@@ -73,10 +73,10 @@ begin
 	process(clk)
 	begin
 		if(rising_edge(clk)) then
-			if(turno < "1010") then
-				ativar <= reset or acabou_norm;
-			else
+			if(turno = "1010") then
 				ativar <= reset or acabou_spec;
+			else
+				ativar <= reset or acabou_norm;
 			end if;
 		end if;
 	end process;
@@ -95,11 +95,6 @@ begin
 				spares_norm <= (others => (others => '0'));
 				strikes_spec <= (others => (others => '0'));
 				spare_spec <= (others => (others => '0'));
-				--pontos1_norm <= (others => '0');
-				--pontos2_norm <= (others => '0');
-				--pontos1_spec <= (others => '0');
-				--pontos2_spec <= (others => '0');
-				--pontos3_spec <= (others => '0');
 				
 			elsif(enable = '1') then
 				ind_jog := to_integer(unsigned(jog_atual));

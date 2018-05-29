@@ -25,13 +25,15 @@ signal jog_atual    : std_logic_vector(2 downto 0) := "001";
 signal jog_pontos	  : std_logic_vector(2 downto 0);
 signal pontos_atuais: std_logic_vector(8 downto 0); 
 signal pontos_bcd   : std_logic_vector(11 downto 0);
-
+signal jog_buff	  : std_logic_vector(2 downto 0);
 signal indice       : natural range 0 to 6;
 
 begin
 
 	timing : clk_div generic map (119999999) port map(clock, enable, muda_placar);
-	ordem  : jogadores port map(clock, reset, muda_placar, n_jog, lixo, jog_atual);
+	ordem  : jogadores port map(clock, reset, muda_placar, n_jog, lixo, jog_buff);
+	
+	jog_atual <= "001" when jog_buff = "000" else jog_buff;
 	
 	indice <= to_integer(unsigned(jog_atual));
 	

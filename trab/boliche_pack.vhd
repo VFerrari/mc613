@@ -22,7 +22,7 @@ package boliche_pack is
 			  n_jog  		: in std_logic_vector(2 downto 0);
 			  pinos  		: in std_logic_vector(9 downto 0);
 			  pontos_atuais: out vetor_disp;
-			  jogador_atual: out std_logic_vector(6 downto 0);
+			  jogador_atual: out std_logic_vector(6 downto 1);
 			  turno_atual  : out std_logic_vector(6 downto 0);
 			  jogada_atual : out std_logic_vector(6 downto 0);
 			  pontos 		: out vetor_pontos;
@@ -63,7 +63,7 @@ package boliche_pack is
 			  reset : in std_logic;
 			  troca : in std_logic;
 			  n_jog : in std_logic_vector(2 downto 0);
-			  comeco: out std_logic;
+			  fim_turno : out std_logic;
 			  jog_at: out std_logic_vector(2 downto 0)
 			 );
 	end component;
