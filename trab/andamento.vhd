@@ -24,7 +24,7 @@ end andamento;
 architecture jogo of andamento is
 
 -- Sinais internos
-signal pontos_jogo : vetor_pontos := (others => (others => '0'));
+signal pontos_jogo : vetor_pontos;
 signal pontos_bcd  : std_logic_vector(11 downto 0);
 
 -- Sinais externos
@@ -36,6 +36,9 @@ signal inicia_jog  : std_logic;
 signal troca_jog   : std_logic;
 signal prox_jog    : std_logic := '0';
 
+-- Sinais teste
+signal temp : std_logic_vector (8 downto 0);
+
 begin
 	prox_jog <= inicia_jog when jogador_at = "000" else troca_jog;
 
@@ -45,9 +48,9 @@ begin
 	process(clk)
 	begin
 		if (rising_edge(clk)) then
-			if (reset = '1') then
-				pontos_jogo <= (others => (others => '0'));
-			elsif (jogador_at = "000") then
+			--if (reset = '1') then
+				--pontos_jogo <= (others => (others => '0'));
+			if (jogador_at = "000") then
 				inicia_jog <= '1';
 			else
 				inicia_jog <= '0';
@@ -57,11 +60,12 @@ begin
 	
 	--Logica geral
 	logica : calcula_pontos port map(clk, enable, reset, botao, pinos, turno_at, jogador_at, pontos_jogo(to_integer(unsigned(jogador_at))), jogada_at, troca_jog);
+	--logica : calcula_pontos port map(clk, enable, reset, botao, pinos, turno_at, jogador_at, temp, jogada_at, troca_jog);
 	
 	--Saidas
-	bcd_pontos: conversor_bcd port map (pontos_jogo(to_integer(unsigned(jogador_at))), pontos_bcd);
+	bcd_pontos: conversor_bcd port map (clk, pontos_jogo(to_integer(unsigned(jogador_at))), pontos_bcd);
 	G1: for i in 0 to 2 generate
-		disp_pontos : bin2dec port map (pontos_bcd(i+3 downto i), pontos_atuais(i));
+		disp_pontos : bin2dec port map (pontos_bcd((i*4)+3 downto i*4), pontos_atuais(i));
 	end generate;
 	                                                                                                                                                                                                                                                                                                                                                                                      
 	disp_turno : bin2dec port map(turno_at, turno_atual);

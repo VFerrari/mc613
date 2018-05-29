@@ -102,7 +102,8 @@ package boliche_pack is
 	end component;
 
 	component conversor_bcd is
-    port(binario_in: in std_logic_vector(8 downto 0);
+    port(clk		 : in std_logic;
+			binario_in: in std_logic_vector(8 downto 0);
          bcd		 : out std_logic_vector(11 downto 0)
     );
 	end component ;
@@ -122,32 +123,18 @@ package boliche_pack is
 				turno       : in std_logic_vector(3 downto 0);
 				jog_atual	: in std_logic_vector(2 downto 0);
 				pontos_jog	: out std_logic_vector(8 downto 0);
-				jogada_at 	: out std_logic_vector(1 downto 0);
+				jogada_atual: out std_logic_vector(1 downto 0);
 				acabou 		: out std_logic
 			  );
 	end component;
 	
 	component rodada is
 		port (clk    	 : in std_logic;
-				enable    : in std_logic;
-				reset 	 : in std_logic;
-				arremesso : in std_logic;
-				pinos  	 : in std_logic_vector(9 downto 0);
-				jogada    : out std_logic_vector(1 downto 0);
-				pontos1 	 : out std_logic_vector(3 downto 0);
-				pontos2   : out std_logic_vector(3 downto 0);
-				strike    : out std_logic;
-				spare     : out std_logic;
-				acabou 	 : out std_logic
-			  );
-	end component;
-	
-	component rodada_spec is
-		port (clk    	 : in std_logic;
 				reset  	 : in std_logic;
 				enable 	 : in std_logic;
 				arremesso : in std_logic;
 				pinos  	 : in std_logic_vector(9 downto 0);
+				turno  	 : in std_logic_vector(3 downto 0);
 				jogada 	 : out std_logic_vector(1 downto 0);
 				pontos1 	 : out std_logic_vector(3 downto 0);
 				pontos2 	 : out std_logic_vector(3 downto 0);

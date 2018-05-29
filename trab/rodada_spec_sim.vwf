@@ -1,16 +1,16 @@
 /*<simulation_settings>
-<ftestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off boliche -c boliche --vector_source="/home/ec2016/ra187888/mc613/mc613/trab/rodada_spec_sim.vwf" --testbench_file="/home/ec2016/ra187888/mc613/mc613/trab/simulation/qsim/rodada_spec_sim.vwf.vht"</ftestbench_cmd>
-<ttestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off boliche -c boliche --vector_source="/home/ec2016/ra187888/mc613/mc613/trab/rodada_spec_sim.vwf" --testbench_file="/home/ec2016/ra187888/mc613/mc613/trab/simulation/qsim/rodada_spec_sim.vwf.vht"</ttestbench_cmd>
-<fnetlist_cmd>quartus_eda --write_settings_files=off --simulation --functional=on --flatten_buses=off --tool=modelsim_oem --format=vhdl --output_directory="/home/ec2016/ra187888/mc613/mc613/trab/simulation/qsim/" boliche -c boliche</fnetlist_cmd>
-<tnetlist_cmd>quartus_eda --write_settings_files=off --simulation --functional=off --flatten_buses=off --timescale=1ps --tool=modelsim_oem --format=vhdl --output_directory="/home/ec2016/ra187888/mc613/mc613/trab/simulation/qsim/" boliche -c boliche</tnetlist_cmd>
+<ftestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off boliche -c boliche --vector_source="/home/ec2016/ra187890/MC/613/trab/rodada_spec_sim.vwf" --testbench_file="/home/ec2016/ra187890/MC/613/trab/simulation/qsim/rodada_spec_sim.vwf.vht"</ftestbench_cmd>
+<ttestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off boliche -c boliche --vector_source="/home/ec2016/ra187890/MC/613/trab/rodada_spec_sim.vwf" --testbench_file="/home/ec2016/ra187890/MC/613/trab/simulation/qsim/rodada_spec_sim.vwf.vht"</ttestbench_cmd>
+<fnetlist_cmd>quartus_eda --write_settings_files=off --simulation --functional=on --flatten_buses=off --tool=modelsim_oem --format=vhdl --output_directory="/home/ec2016/ra187890/MC/613/trab/simulation/qsim/" boliche -c boliche</fnetlist_cmd>
+<tnetlist_cmd>quartus_eda --write_settings_files=off --simulation --functional=off --flatten_buses=off --timescale=1ps --tool=modelsim_oem --format=vhdl --output_directory="/home/ec2016/ra187890/MC/613/trab/simulation/qsim/" boliche -c boliche</tnetlist_cmd>
 <modelsim_script>onerror {exit -code 1}
 vlib work
 vcom -work work boliche.vho
 vcom -work work rodada_spec_sim.vwf.vht
-vsim -novopt -c -t 1ps -L cyclonev -L altera -L altera_mf -L 220model -L sgate -L altera_lnsim work.rodada_spec_vhd_vec_tst
+vsim -novopt -c -t 1ps -L cyclonev -L altera -L altera_mf -L 220model -L sgate -L altera_lnsim work.rodada_vhd_vec_tst
 vcd file -direction boliche.msim.vcd
-vcd add -internal rodada_spec_vhd_vec_tst/*
-vcd add -internal rodada_spec_vhd_vec_tst/i1/*
+vcd add -internal rodada_vhd_vec_tst/*
+vcd add -internal rodada_vhd_vec_tst/i1/*
 proc simTimestamp {} {
     echo "Simulation time: $::now ps"
     if { [string equal running [runStatus]] } {
@@ -20,16 +20,15 @@ proc simTimestamp {} {
 after 2500 simTimestamp
 run -all
 quit -f
-
 </modelsim_script>
 <modelsim_script_timing>onerror {exit -code 1}
 vlib work
 vcom -work work boliche.vho
 vcom -work work rodada_spec_sim.vwf.vht
-vsim -novopt -c -t 1ps -sdfmax rodada_spec_vhd_vec_tst/i1=boliche_vhd.sdo -L cyclonev -L altera -L altera_mf -L 220model -L sgate -L altera_lnsim work.rodada_spec_vhd_vec_tst
+vsim -novopt -c -t 1ps -sdfmax rodada_vhd_vec_tst/i1=boliche_vhd.sdo -L cyclonev -L altera -L altera_mf -L 220model -L sgate -L altera_lnsim work.rodada_vhd_vec_tst
 vcd file -direction boliche.msim.vcd
-vcd add -internal rodada_spec_vhd_vec_tst/*
-vcd add -internal rodada_spec_vhd_vec_tst/i1/*
+vcd add -internal rodada_vhd_vec_tst/*
+vcd add -internal rodada_vhd_vec_tst/i1/*
 proc simTimestamp {} {
     echo "Simulation time: $::now ps"
     if { [string equal running [runStatus]] } {
@@ -39,7 +38,6 @@ proc simTimestamp {} {
 after 2500 simTimestamp
 run -all
 quit -f
-
 </modelsim_script_timing>
 <hdl_lang>vhdl</hdl_lang>
 </simulation_settings>*/
@@ -487,6 +485,56 @@ SIGNAL("strikes[0]")
 	PARENT = "strikes";
 }
 
+SIGNAL("turno")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = BUS;
+	WIDTH = 4;
+	LSB_INDEX = 0;
+	DIRECTION = INPUT;
+	PARENT = "";
+}
+
+SIGNAL("turno[3]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = INPUT;
+	PARENT = "turno";
+}
+
+SIGNAL("turno[2]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = INPUT;
+	PARENT = "turno";
+}
+
+SIGNAL("turno[1]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = INPUT;
+	PARENT = "turno";
+}
+
+SIGNAL("turno[0]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = INPUT;
+	PARENT = "turno";
+}
+
 TRANSITION_LIST("acabou")
 {
 	NODE
@@ -529,9 +577,7 @@ TRANSITION_LIST("enable")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL 0 FOR 230.0;
-		LEVEL 1 FOR 540.0;
-		LEVEL 0 FOR 230.0;
+		LEVEL 1 FOR 1000.0;
 	}
 }
 
@@ -858,6 +904,50 @@ TRANSITION_LIST("strikes[0]")
 	}
 }
 
+TRANSITION_LIST("turno[3]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL 0 FOR 790.0;
+		LEVEL 1 FOR 210.0;
+	}
+}
+
+TRANSITION_LIST("turno[2]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL 0 FOR 10.0;
+		LEVEL 1 FOR 780.0;
+		LEVEL 0 FOR 210.0;
+	}
+}
+
+TRANSITION_LIST("turno[1]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL 0 FOR 10.0;
+		LEVEL 1 FOR 780.0;
+		LEVEL 0 FOR 10.0;
+		LEVEL 1 FOR 200.0;
+	}
+}
+
+TRANSITION_LIST("turno[0]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL 0 FOR 10.0;
+		LEVEL 1 FOR 790.0;
+		LEVEL 0 FOR 200.0;
+	}
+}
+
 DISPLAY_LINE
 {
 	CHANNEL = "clk";
@@ -896,17 +986,17 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pinos";
+	CHANNEL = "turno";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 4;
 	TREE_LEVEL = 0;
-	CHILDREN = 5, 6, 7, 8, 9, 10, 11, 12, 13, 14;
+	CHILDREN = 5, 6, 7, 8;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "pinos[9]";
+	CHANNEL = "turno[3]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 5;
@@ -916,7 +1006,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pinos[8]";
+	CHANNEL = "turno[2]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 6;
@@ -926,7 +1016,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pinos[7]";
+	CHANNEL = "turno[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 7;
@@ -936,7 +1026,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pinos[6]";
+	CHANNEL = "turno[0]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 8;
@@ -946,12 +1036,62 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pinos[5]";
+	CHANNEL = "pinos";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 9;
+	TREE_LEVEL = 0;
+	CHILDREN = 10, 11, 12, 13, 14, 15, 16, 17, 18, 19;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "pinos[9]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 10;
 	TREE_LEVEL = 1;
-	PARENT = 4;
+	PARENT = 9;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "pinos[8]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 11;
+	TREE_LEVEL = 1;
+	PARENT = 9;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "pinos[7]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 12;
+	TREE_LEVEL = 1;
+	PARENT = 9;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "pinos[6]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 13;
+	TREE_LEVEL = 1;
+	PARENT = 9;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "pinos[5]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 14;
+	TREE_LEVEL = 1;
+	PARENT = 9;
 }
 
 DISPLAY_LINE
@@ -959,9 +1099,9 @@ DISPLAY_LINE
 	CHANNEL = "pinos[4]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 10;
+	TREE_INDEX = 15;
 	TREE_LEVEL = 1;
-	PARENT = 4;
+	PARENT = 9;
 }
 
 DISPLAY_LINE
@@ -969,9 +1109,9 @@ DISPLAY_LINE
 	CHANNEL = "pinos[3]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 11;
+	TREE_INDEX = 16;
 	TREE_LEVEL = 1;
-	PARENT = 4;
+	PARENT = 9;
 }
 
 DISPLAY_LINE
@@ -979,9 +1119,9 @@ DISPLAY_LINE
 	CHANNEL = "pinos[2]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 12;
+	TREE_INDEX = 17;
 	TREE_LEVEL = 1;
-	PARENT = 4;
+	PARENT = 9;
 }
 
 DISPLAY_LINE
@@ -989,9 +1129,9 @@ DISPLAY_LINE
 	CHANNEL = "pinos[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 13;
+	TREE_INDEX = 18;
 	TREE_LEVEL = 1;
-	PARENT = 4;
+	PARENT = 9;
 }
 
 DISPLAY_LINE
@@ -999,9 +1139,9 @@ DISPLAY_LINE
 	CHANNEL = "pinos[0]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 14;
+	TREE_INDEX = 19;
 	TREE_LEVEL = 1;
-	PARENT = 4;
+	PARENT = 9;
 }
 
 DISPLAY_LINE
@@ -1009,9 +1149,9 @@ DISPLAY_LINE
 	CHANNEL = "jogada";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 15;
+	TREE_INDEX = 20;
 	TREE_LEVEL = 0;
-	CHILDREN = 16, 17;
+	CHILDREN = 21, 22;
 }
 
 DISPLAY_LINE
@@ -1019,9 +1159,9 @@ DISPLAY_LINE
 	CHANNEL = "jogada[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 16;
+	TREE_INDEX = 21;
 	TREE_LEVEL = 1;
-	PARENT = 15;
+	PARENT = 20;
 }
 
 DISPLAY_LINE
@@ -1029,64 +1169,14 @@ DISPLAY_LINE
 	CHANNEL = "jogada[0]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 17;
+	TREE_INDEX = 22;
 	TREE_LEVEL = 1;
-	PARENT = 15;
+	PARENT = 20;
 }
 
 DISPLAY_LINE
 {
 	CHANNEL = "pontos1";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 18;
-	TREE_LEVEL = 0;
-	CHILDREN = 19, 20, 21, 22;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "pontos1[3]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 19;
-	TREE_LEVEL = 1;
-	PARENT = 18;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "pontos1[2]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 20;
-	TREE_LEVEL = 1;
-	PARENT = 18;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "pontos1[1]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 21;
-	TREE_LEVEL = 1;
-	PARENT = 18;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "pontos1[0]";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 22;
-	TREE_LEVEL = 1;
-	PARENT = 18;
-}
-
-DISPLAY_LINE
-{
-	CHANNEL = "pontos2";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 23;
@@ -1096,7 +1186,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pontos2[3]";
+	CHANNEL = "pontos1[3]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 24;
@@ -1106,7 +1196,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pontos2[2]";
+	CHANNEL = "pontos1[2]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 25;
@@ -1116,7 +1206,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pontos2[1]";
+	CHANNEL = "pontos1[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 26;
@@ -1126,7 +1216,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pontos2[0]";
+	CHANNEL = "pontos1[0]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 27;
@@ -1136,7 +1226,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pontos3";
+	CHANNEL = "pontos2";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 28;
@@ -1146,7 +1236,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pontos3[3]";
+	CHANNEL = "pontos2[3]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 29;
@@ -1156,7 +1246,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pontos3[2]";
+	CHANNEL = "pontos2[2]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 30;
@@ -1166,7 +1256,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pontos3[1]";
+	CHANNEL = "pontos2[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 31;
@@ -1176,7 +1266,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "pontos3[0]";
+	CHANNEL = "pontos2[0]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 32;
@@ -1186,17 +1276,17 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "spares";
+	CHANNEL = "pontos3";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 33;
 	TREE_LEVEL = 0;
-	CHILDREN = 34, 35;
+	CHILDREN = 34, 35, 36, 37;
 }
 
 DISPLAY_LINE
 {
-	CHANNEL = "spares[0]";
+	CHANNEL = "pontos3[3]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 34;
@@ -1206,7 +1296,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "spares[1]";
+	CHANNEL = "pontos3[2]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 35;
@@ -1216,12 +1306,62 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "strikes";
+	CHANNEL = "pontos3[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 36;
+	TREE_LEVEL = 1;
+	PARENT = 33;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "pontos3[0]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 37;
+	TREE_LEVEL = 1;
+	PARENT = 33;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "spares";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 38;
 	TREE_LEVEL = 0;
-	CHILDREN = 37, 38, 39;
+	CHILDREN = 39, 40;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "spares[0]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 39;
+	TREE_LEVEL = 1;
+	PARENT = 38;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "spares[1]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 40;
+	TREE_LEVEL = 1;
+	PARENT = 38;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "strikes";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 41;
+	TREE_LEVEL = 0;
+	CHILDREN = 42, 43, 44;
 }
 
 DISPLAY_LINE
@@ -1229,9 +1369,9 @@ DISPLAY_LINE
 	CHANNEL = "strikes[0]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 37;
+	TREE_INDEX = 42;
 	TREE_LEVEL = 1;
-	PARENT = 36;
+	PARENT = 41;
 }
 
 DISPLAY_LINE
@@ -1239,9 +1379,9 @@ DISPLAY_LINE
 	CHANNEL = "strikes[1]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 38;
+	TREE_INDEX = 43;
 	TREE_LEVEL = 1;
-	PARENT = 36;
+	PARENT = 41;
 }
 
 DISPLAY_LINE
@@ -1249,9 +1389,9 @@ DISPLAY_LINE
 	CHANNEL = "strikes[2]";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 39;
+	TREE_INDEX = 44;
 	TREE_LEVEL = 1;
-	PARENT = 36;
+	PARENT = 41;
 }
 
 DISPLAY_LINE
@@ -1259,7 +1399,7 @@ DISPLAY_LINE
 	CHANNEL = "acabou";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 40;
+	TREE_INDEX = 45;
 	TREE_LEVEL = 0;
 }
 
