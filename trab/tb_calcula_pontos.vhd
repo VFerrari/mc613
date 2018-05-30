@@ -22,7 +22,7 @@ begin
 		clk <= not(clk) after 50 ps;
 	end process;
 
-	calc : calcula_pontos port map(clk, '1', '0', botao, pinos, turno, jog_atual, pontos_jog, jogada_atual, acabou);
+	calc : calcula_pontos port map(clk, '1', '0', botao, pinos, turno, jog_atual, "100000000", pontos_jog, jogada_atual, acabou);
 	
 	process
 	begin

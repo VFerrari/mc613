@@ -12,9 +12,10 @@ port (clk    		: in std_logic;
 		pinos       : in std_logic_vector(9 downto 0);
 		turno       : in std_logic_vector(3 downto 0);
 		jog_atual	: in std_logic_vector(2 downto 0);
-		pontos_jog	: out std_logic_vector(8 downto 0);
+		pontos_ant  : in std_logic_vector(8 downto 0);
+		pontos_jog	: out std_logic_vector(8 downto 0) := "000000000";
 		jogada_atual: out std_logic_vector(1 downto 0);
-		acabou 		: out std_logic
+		acabou 		: out std_logic := '0'
 	  );
 end calcula_pontos;
 
@@ -22,7 +23,6 @@ architecture calc of calcula_pontos is
 
 --Sinais
 
-signal pontos_totais  : vetor_pontos := (others => (others => '0'));
 signal strikes	 : vetor_st_total;
 signal spares	 : vetor_sp_total;
 signal pontos_1   : std_logic_vector(3 downto 0) := "0000";
@@ -35,9 +35,6 @@ signal prox_jog    : std_logic := '0';
 
 signal strike_buff : std_logic_vector(2 downto 0);
 signal spare_buff  : std_logic_vector(1 downto 0);
-
-signal temp  : std_logic_vector(8 downto 0) := "000000000";
-signal temp2  : std_logic_vector(8 downto 0) := "000000000";
 
 begin
 								
@@ -58,7 +55,7 @@ begin
 	process(clk)
 	begin
 		if(rising_edge(clk)) then
-			ativar <= reset or prox_jog;
+			ativar <= prox_jog;
 			
 			if(reset = '1') then
 				strikes <= (others => (others => (others => '0')));
@@ -78,10 +75,7 @@ begin
 		
 	begin
 		if(rising_edge(ativar)) then	
-			if(reset = '1') then
-				pontos_totais <= (others => (others => '0'));
-
-			elsif(enable = '1') then
+			if(enable = '1') then
 				ind_jog    := to_integer(unsigned(jog_atual));
 				pontos_rod := "000000000";
 				pontos1    := "00000" & pontos_1;
@@ -125,14 +119,13 @@ begin
 					end if;
 				end if;
 				
-				pontos_totais(ind_jog) <= std_logic_vector(unsigned(pontos_totais(ind_jog)) + unsigned(pontos_rod));
+				pontos_jog <= std_logic_vector(unsigned(pontos_ant) + unsigned(pontos_rod));
 				
 			end if;
 		end if;
 	end process;
 	
-	pontos_jog <= pontos_totais(to_integer(unsigned(jog_atual)));
-	jogada_atual <= jogada_at;
 	acabou <= prox_jog;
+	jogada_atual <= jogada_at;
 	
 end calc;
