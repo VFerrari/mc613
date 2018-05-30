@@ -26,8 +26,8 @@ begin
 		  jogs_pos_aux := ("001", "010", "011" , "100" , "101", "110");
 		  
         if rising_edge(clk) then
-            for j in vetor_pontos'LEFT to vetor_pontos'RIGHT - 1 loop 
-                for i in vetor_pontos'LEFT to vetor_pontos'RIGHT - 1 - j loop 
+            for j in 1 to 5 loop 
+                for i in 1 to 6 - j loop 
 					 
                     if (unsigned(pontos_jogs_aux(i)) < unsigned(pontos_jogs_aux(i + 1))) then
 						

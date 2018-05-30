@@ -22,7 +22,7 @@ signal avanca : std_logic;
 
 -- Sinais de jogo
 signal n_jog : std_logic_vector(2 downto 0);
-signal pontos			 : vetor_pontos := ("000101010", "100000000", "100101100", "000010101", "000000000","001010000");
+signal pontos			 : vetor_pontos := ("000000000", "000101010", "100000000", "100101100", "000010101", "000000000","001010000");
 signal jogs				 : vetor_jogs;
 signal pos_pontos		 : vetor_pontos;
 

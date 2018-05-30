@@ -21,13 +21,14 @@ begin
 	process(clk)
 		variable dez_buf : integer range 0 to 99;
 	begin
-	
-		dez_buf := (dec mod 100);
-		dez_buf := (dez_buf / 10);
+		if(rising_edge(clk)) then
+			dez_buf := (dec mod 100);
+			dez_buf := (dez_buf / 10);
 			
-		un <= (dec mod 10);
-		dez <= dez_buf;
-		cent <= (dec / 100);
+			un <= (dec mod 10);
+			dez <= dez_buf;
+			cent <= (dec / 100);
+		end if;
 	end process;
 
 	bcd(11 downto 8) <= std_logic_vector(to_unsigned(cent,4));
