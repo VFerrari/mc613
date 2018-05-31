@@ -26,6 +26,8 @@ package boliche_pack is
 			  turno_atual  : out std_logic_vector(6 downto 0);
 			  jogada_atual : out std_logic_vector(6 downto 0);
 			  pontos 		: out vetor_pontos;
+			  gira_visores : out std_logic_vector(6 downto 0);
+			  para_de_girar: out std_logic;
 			  fim_partida  : out std_logic
 			 );
 	end component;
@@ -125,6 +127,8 @@ package boliche_pack is
 				pontos_ant  : in std_logic_vector(8 downto 0);
 				pontos_jog	: out std_logic_vector(8 downto 0);
 				jogada_atual: out std_logic_vector(1 downto 0);
+				strike_atual: out std_logic;
+				spare_atual : out std_logic;
 				acabou 		: out std_logic
 			  );
 	end component;

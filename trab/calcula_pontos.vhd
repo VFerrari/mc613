@@ -15,6 +15,8 @@ port (clk    		: in std_logic;
 		pontos_ant  : in std_logic_vector(8 downto 0);
 		pontos_jog	: out std_logic_vector(8 downto 0) := "000000000";
 		jogada_atual: out std_logic_vector(1 downto 0);
+		strike_atual: out std_logic;
+		spare_atual : out std_logic;
 		acabou 		: out std_logic := '0'
 	  );
 end calcula_pontos;

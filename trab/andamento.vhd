@@ -16,6 +16,8 @@ entity andamento is
 		  turno_atual  : out std_logic_vector(6 downto 0);
 		  jogada_atual : out std_logic_vector(6 downto 0);
   		  pontos 		: out vetor_pontos;
+		  gira_visores : out std_logic_vector(6 downto 0);
+		  para_de_girar: out std_logic;
 		  fim_partida  : out std_logic
 		 );
 end andamento;
@@ -32,6 +34,8 @@ signal delay   : std_logic := '0';
 signal troca_jog   : std_logic := '0';
 signal prox_jog    : std_logic := '0';
 signal indice		 : integer range 1 to 6;
+signal gira_strike: std_logic;
+signal gira_spare : std_logic;
 
 -- Sinais externos
 signal pontos_buff : std_logic_vector(8 downto 0) := "000000000";
@@ -39,15 +43,20 @@ signal fim_turno   : std_logic := '0';
 signal turno_at    : std_logic_vector (3 downto 0);
 signal jogador_at	 : std_logic_vector (2 downto 0);
 signal jogada_at   : std_logic_vector (1 downto 0);
+signal strike_atual: std_logic;
+signal spare_atual : std_logic;
+signal gira_stop   : std_logic;
 signal salva_pontos: std_logic;
 
 begin
 	prox_jog <= inicia_jog when jogador_at = "000" else troca_jog;
 	indice <= to_integer(unsigned(jogador_at));
 	
+	-- Maquinas de estados que controlam o jogo.
 	maq_jogs   : jogadores port map(clk, reset, prox_jog, n_jog, fim_turno, jogador_at);
 	maq_turnos : turnos port map(clk, reset, fim_turno, turno_at, fim_partida);
 	
+	-- Colocando em um registrador os pontos dos jogadores
 	process(clk)
 	begin
 		if (rising_edge(clk)) then
@@ -69,6 +78,7 @@ begin
 		end if;
 	end process;
 	
+	-- Jogador "invisivel".
 	process(clk)
 	begin
 		if (rising_edge(clk)) then
@@ -86,17 +96,39 @@ begin
 	pontos_ant <= pontos_jogo(indice);
 	
 	--Logica geral
-	logica : calcula_pontos port map(clk, enable, reset, botao, pinos, turno_at, jogador_at, pontos_ant, pontos_buff, jogada_at, salva_pontos);
+	logica : calcula_pontos port map(clk, 
+												enable, 
+												reset, 
+												botao, 		 	-- Confirma
+												pinos, 
+												turno_at, 
+												jogador_at, 
+												pontos_ant, 
+												pontos_buff, 	-- Pontos acumulados
+												jogada_at, 
+												strike_atual,
+												spare_atual,
+												salva_pontos); -- Sinal de fim (uma rodada).
 	
 	--Saidas
+	
+	-- Pontos
 	bcd_pontos: conversor_bcd port map (clk, pontos_ant, pontos_bcd);
 	G1: for i in 0 to 2 generate
 		disp_pontos : bin2dec port map (pontos_bcd((i*4)+3 downto i*4), pontos_atuais(i));
 	end generate;
-	                                                                                                                                                                                                                                                                                                                                                                                      
+	
+	-- Outros em display
 	disp_turno : bin2dec port map(turno_at, turno_atual);
 	disp_jogada: bin2dec port map("00" & jogada_at, jogada_atual);
 	
+	-- Gira-visores
+	gira_strike <= strike_atual when botao = '1' else (strike_atual xor gira_stop);
+	gira_spare  <= spare_atual when botao = '1' else (spare_atual xor gira_stop);
+	para_de_girar <= gira_stop;
+	--gira  	  : gira_visor port map(clk, strike_atual, spare_atual, gira_stop, gira_visores);
+
+	-- LEDS
 	with jogador_at select
 		jogador_atual <= "000001" when "001",
 							  "000010" when "010",
@@ -105,6 +137,7 @@ begin
 							  "010000" when "101",
 							  "100000" when others;
 
+	-- Vetor completo de pontos
 	pontos <= pontos_jogo;
-	
+ 
 end jogo;

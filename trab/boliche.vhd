@@ -35,6 +35,8 @@ signal jogada_disp : std_logic_vector(6 downto 0);
 signal pontos_meio 	 : vetor_disp;
 signal pontos_d       : vetor_disp;
 signal disp_jog_fim : std_logic_vector(6 downto 0);
+signal gira_visores : std_logic_vector(6 downto 0);
+signal para_de_girar: std_logic := '0';
 
 -- Leds
 signal leds_meio  : std_logic_vector(6 downto 1);
@@ -43,21 +45,78 @@ signal leds			: std_logic_vector(6 downto 1);
 
 
 begin
+
+	-- Maquina de estados principal
 	avanca <= fim_ini when secao(0) = '1' else (fim_meio or not(KEY(1))) when secao(1) = '1' else '0';
 	maq : controle port map(CLOCK_50, not(KEY(0)), avanca, secao);
 	
-	ini: inicializador port map(CLOCK_50, secao(0), not(KEY(3)), SW(6 downto 1), fim_ini, n_jog, disp_ini);
-	meio: andamento port map(CLOCK_50, secao(1), not(KEY(0)), not(KEY(2)), n_jog, SW(9 downto 0), pontos_meio, leds_meio, turno_disp, jogada_disp, pontos, fim_meio);
-	sort: ordena port map(CLOCK_50, pontos, pos_pontos, jogs);
-	fim: final port map(CLOCK_50, secao(2), not(KEY(0)), n_jog, jogs, pos_pontos, pontos_d, disp_jog_fim);
+	-- Inicio
+	ini:  inicializador port map(CLOCK_50,
+										  secao(0),			-- Enable
+										  not(KEY(3)), 	-- Confirma
+										  SW(6 downto 1), -- Selecionador
+										  fim_ini, 			-- Sinal de fim
+										  n_jog, 			-- Numero de jogadores
+										  disp_ini);		-- Display
+										  
+	-- Andamento do jogo
+	meio: andamento 	  port map(CLOCK_50,
+										  secao(1),			-- Enable 
+										  not(KEY(0)), 	-- Reset
+										  not(KEY(2)), 	-- Confirma
+										  n_jog, 			-- Numero de jogadores
+										  SW(9 downto 0), -- Pinos
+										  pontos_meio, 	-- Pontos atuais (do jogador atual, Display)
+										  leds_meio, 		-- Jogador atual (LED)
+										  turno_disp, 		-- Turno atual   (Display)
+										  jogada_disp, 	-- Jogada atual  (Display)
+										  pontos, 			-- Pontos de todos os jogadores
+										  gira_visores, 	-- Visores girando (Display)
+										  para_de_girar,  -- Sinal para parar de girar os visores
+										  fim_meio);		-- Sinal de fim.
+										  
+	-- Ordenacao
+	sort: ordena 		  port map(CLOCK_50, 
+										  pontos, 			-- Pontos dos jogadores (em ordem do jogo)
+										  pos_pontos, 		-- Pontos dos jogadores (em ordem decrescente)
+										  jogs);				-- Indices do jogo dos jogadores (ordenado por posicao).
 	
-	HEX0 <= pontos_d(2) when secao(2) = '1' else pontos_meio(0) when secao(1) = '1' else disp_ini when secao(0) = '1' else "1111111";
-	HEX1 <= pontos_d(1) when secao(2) = '1' else pontos_meio(1) when secao(1) = '1' else "1111111";
-	HEX2 <= pontos_d(0) when secao(2) = '1' else pontos_meio(2) when secao(1) = '1' else "1111111";
-	HEX3 <= "1111111";
-	HEX4 <= jogada_disp when secao(1) ='1' else "1111111";
-	HEX5 <= turno_disp when secao(1) = '1' else disp_jog_fim when secao(2) = '1' else "1111111";
+	-- Final
+	fim:  final 		  port map(CLOCK_50, 
+										  secao(2), 		-- Enable
+										  not(KEY(0)), 	-- Reset
+										  n_jog, 			-- Numero de jogadores
+										  jogs, 				-- Jogadores (ordenados por posicao)
+										  pos_pontos, 		-- Pontos (em ordem decrescente)
+										  pontos_d, 		-- Pontos de um jogador (Display)
+										  disp_jog_fim);	-- Jogador correspondente a pontuacao (Display)
 	
+	
+	-- Display
+	HEX0 <= gira_visores	  when para_de_girar = '0' else 
+			  pontos_d(2)    when secao(2) 		= '1'	else 
+			  pontos_meio(0) when secao(1) 		= '1' else 
+			  disp_ini 		  when secao(0) 		= '1'	else "1111111";
+			  
+	HEX1 <= gira_visores   when para_de_girar = '0' else 
+			  pontos_d(1)    when secao(2) 		= '1' else 
+			  pontos_meio(1) when secao(1) 		= '1' else "1111111";
+			  
+	HEX2 <= gira_visores   when para_de_girar = '0' else 
+			  pontos_d(0) 	  when secao(2) 		= '1' else 
+			  pontos_meio(2) when secao(1) 		= '1' else "1111111";
+			  
+	HEX3 <= gira_visores when para_de_girar = '0' else   "1111111";
+	
+	HEX4 <= gira_visores when para_de_girar = '0' else 
+			  jogada_disp  when secao(1) 		 = '1' else   "1111111";
+			  
+	HEX5 <= gira_visores when para_de_girar = '0' else 
+			  turno_disp 	when secao(1) 		 = '1' else 
+			  disp_jog_fim when secao(2) 		 = '1' else   "1111111";
+	
+	
+	-- LEDS
 	with jogs(1) select
 		leds_fim <= "000001" when "001",
 					   "000010" when "010",
@@ -66,6 +125,7 @@ begin
 						"010000" when "101",
 					   "100000" when others;
 	
-	LEDR <= ("000" & leds_meio & '0') when (secao(1) = '1') else ("000" & leds_fim & '0') when (secao(2) = '1') else "0000000000";
+	LEDR <= ("000" & leds_meio & '0') when (secao(1) = '1') else 
+			  ("000" & leds_fim & '0')  when (secao(2) = '1') else "0000000000";
 	
 end logica;
