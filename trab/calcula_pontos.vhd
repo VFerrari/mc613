@@ -127,6 +127,8 @@ begin
 		end if;
 	end process;
 	
+	strike_atual <= strike_buff(2) when (jogada_at = "01" or jogada_at = "10") else strike_buff(1) when jogada_at = "11" else strike_buff(0);
+	spare_atual <= spare_buff(1) when jogada_at = "01" else spare_buff(0);
 	acabou <= prox_jog;
 	jogada_atual <= jogada_at;
 	

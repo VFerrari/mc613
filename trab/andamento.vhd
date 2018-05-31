@@ -17,7 +17,7 @@ entity andamento is
 		  jogada_atual : out std_logic_vector(6 downto 0);
   		  pontos 		: out vetor_pontos;
 		  gira_visores : out std_logic_vector(6 downto 0);
-		  para_de_girar: out std_logic;
+		  para_de_girar: out std_logic := '1';
 		  fim_partida  : out std_logic
 		 );
 end andamento;
@@ -45,7 +45,7 @@ signal jogador_at	 : std_logic_vector (2 downto 0);
 signal jogada_at   : std_logic_vector (1 downto 0);
 signal strike_atual: std_logic;
 signal spare_atual : std_logic;
-signal gira_stop   : std_logic;
+signal gira_stop   : std_logic := '1';
 signal salva_pontos: std_logic;
 
 begin
@@ -123,10 +123,10 @@ begin
 	disp_jogada: bin2dec port map("00" & jogada_at, jogada_atual);
 	
 	-- Gira-visores
-	gira_strike <= strike_atual when botao = '1' else (strike_atual xor gira_stop);
-	gira_spare  <= spare_atual when botao = '1' else (spare_atual xor gira_stop);
+	gira_strike <= strike_atual when botao = '1' else (strike_atual and not(gira_stop));
+	gira_spare  <= spare_atual when botao = '1' else (spare_atual and not(gira_stop));
 	para_de_girar <= gira_stop;
-	--gira  	  : gira_visor port map(clk, strike_atual, spare_atual, gira_stop, gira_visores);
+	gira  	  : gira_visor port map(clk, gira_strike, gira_spare, gira_stop, gira_visores);
 
 	-- LEDS
 	with jogador_at select

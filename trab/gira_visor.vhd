@@ -7,14 +7,14 @@ entity gira_visor is
 		clk		: in std_logic;
 		strike	: in std_logic;
 		spare		: in std_logic;
-		gira_stop: out std_logic;
+		gira_stop: out std_logic := '1';
 		seg_gira : out std_logic_vector(6 downto 0)
   );
 end gira_visor;
 
 architecture behavioral of gira_visor is
 
-signal clk_2seg : std_logic;
+signal clk_2seg : std_logic := '1';
 signal clk_1dseg: std_logic;
 signal sos      : std_logic;
 type seg_atual_type is (A, B, C, D, E, F, G);
