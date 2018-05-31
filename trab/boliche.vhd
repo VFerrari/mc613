@@ -36,7 +36,7 @@ signal pontos_meio 	 : vetor_disp;
 signal pontos_d       : vetor_disp;
 signal disp_jog_fim : std_logic_vector(6 downto 0);
 signal gira_visores : std_logic_vector(6 downto 0);
-signal para_de_girar: std_logic := '0';
+signal para_de_girar: std_logic := '1';
 
 -- Leds
 signal leds_meio  : std_logic_vector(6 downto 1);
