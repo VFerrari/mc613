@@ -123,10 +123,10 @@ begin
 	disp_jogada: bin2dec port map("00" & jogada_at, jogada_atual);
 	
 	-- Gira-visores
-	gira_strike <= strike_atual when (botao = '1' and enable = '1) 
+	gira_strike <= strike_atual when (botao = '1' and enable = '1' and gira_stop = '1') 
 										 else (strike_atual and not(gira_stop));
 										 
-	gira_spare  <= spare_atual when (botao = '1' and enable = '1') 
+	gira_spare  <= spare_atual when (botao = '1' and enable = '1' and gira_stop = '1') 
 										else (spare_atual and not(gira_stop));
 										
 	para_de_girar <= gira_stop;
