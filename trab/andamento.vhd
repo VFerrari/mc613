@@ -30,7 +30,7 @@ signal pontos_jogo : vetor_pontos := (others => (others => '0'));
 signal pontos_bcd  : std_logic_vector(11 downto 0);
 signal pontos_ant  : std_logic_vector(8 downto 0);
 signal inicia_jog  : std_logic;
-signal delay   : std_logic := '0';
+signal salva_pontos   : std_logic := '0';
 signal troca_jog   : std_logic := '0';
 signal prox_jog    : std_logic := '0';
 signal indice		 : integer range 1 to 6;
@@ -46,7 +46,7 @@ signal jogada_at   : std_logic_vector (1 downto 0);
 signal strike_atual: std_logic;
 signal spare_atual : std_logic;
 signal gira_stop   : std_logic := '1';
-signal salva_pontos: std_logic;
+signal calculando: std_logic;
 
 begin
 	prox_jog <= inicia_jog when jogador_at = "000" else troca_jog;
@@ -63,13 +63,13 @@ begin
 			if (reset = '1') then
 				pontos_jogo <= (others => (others => '0'));
 				troca_jog <= '0';
-				delay <= '0';
-			elsif (salva_pontos = '1') then
-				if (delay = '0' and troca_jog = '0') then
-					delay <= '1';
-				elsif (delay = '1') then
+				salva_pontos <= '0';
+			elsif (calculando = '1') then
+				if (salva_pontos = '0' and troca_jog = '0') then
+					salva_pontos <= '1';
+				elsif (salva_pontos = '1') then
 					troca_jog <= '1';
-					delay <= '0';
+					salva_pontos <= '0';
 					pontos_jogo(indice) <= pontos_buff;
 				end if;
 			else
@@ -108,7 +108,7 @@ begin
 												jogada_at, 
 												strike_atual,
 												spare_atual,
-												salva_pontos); -- Sinal de fim (uma rodada).
+												calculando); -- Sinal de fim (uma rodada).
 	
 	--Saidas
 	
@@ -123,8 +123,12 @@ begin
 	disp_jogada: bin2dec port map("00" & jogada_at, jogada_atual);
 	
 	-- Gira-visores
-	gira_strike <= strike_atual when botao = '1' else (strike_atual and not(gira_stop));
-	gira_spare  <= spare_atual when botao = '1' else (spare_atual and not(gira_stop));
+	gira_strike <= strike_atual when (botao = '1' and enable = '1) 
+										 else (strike_atual and not(gira_stop));
+										 
+	gira_spare  <= spare_atual when (botao = '1' and enable = '1') 
+										else (spare_atual and not(gira_stop));
+										
 	para_de_girar <= gira_stop;
 	gira  	  : gira_visor port map(clk, gira_strike, gira_spare, gira_stop, gira_visores);
 
