@@ -10,6 +10,7 @@ port (clk    : in std_logic;
 		pinos  : in std_logic_vector(9 downto 0);
 		turno  : in std_logic_vector(3 downto 0);
 		jogada : out std_logic_vector(1 downto 0);
+		jogada_ant: out std_logic_vector(1 downto 0);
 		pontos1 : out std_logic_vector(3 downto 0);
 		pontos2 : out std_logic_vector(3 downto 0);
 		pontos3 : out std_logic_vector(3 downto 0);
@@ -132,6 +133,7 @@ begin
 	end process;
 	
 	jogada <= "11" when (estado = terceira and reset = '0') else "10" when (estado = segunda and reset = '0') else "01";
+	jogada_ant <= "11" when (estado_ant = terceira and reset = '0') else "10" when (estado_ant = segunda and reset = '0') else "01";
 	acabou <= ativar when (estado = primeira and reset = '0' and enable = '1') else '0';
 	
 	pinos_cont_2 <= "0000000000" when (estado_ant = primeira) else (pinos_2 xor pinos_1) when strikes_buff(1) = '0' else pinos_2;

@@ -141,6 +141,7 @@ package boliche_pack is
 				pinos  	 : in std_logic_vector(9 downto 0);
 				turno  	 : in std_logic_vector(3 downto 0);
 				jogada 	 : out std_logic_vector(1 downto 0);
+				jogada_ant: out std_logic_vector(1 downto 0);
 				pontos1 	 : out std_logic_vector(3 downto 0);
 				pontos2 	 : out std_logic_vector(3 downto 0);
 				pontos3 	 : out std_logic_vector(3 downto 0);

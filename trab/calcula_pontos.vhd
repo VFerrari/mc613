@@ -31,12 +31,13 @@ signal pontos_1   : std_logic_vector(3 downto 0) := "0000";
 signal pontos_2   : std_logic_vector(3 downto 0) := "0000";
 signal pontos_3   : std_logic_vector(3 downto 0) := "0000";
 signal jogada_at : std_logic_vector(1 downto 0) := "00";
+signal jogada_ant: std_logic_vector(1 downto 0);
 
 signal ativar         : std_logic := '0';
 signal prox_jog    : std_logic := '0';
 
-signal strike_buff : std_logic_vector(2 downto 0);
-signal spare_buff  : std_logic_vector(1 downto 0);
+signal strike_buff : std_logic_vector(0 to 2);
+signal spare_buff  : std_logic_vector(0 to 1);
 
 begin
 								
@@ -47,6 +48,7 @@ begin
 							   pinos,
 							   turno,
 							   jogada_at,
+								jogada_ant,
 							   pontos_1, 
 							   pontos_2,
 							   pontos_3, 
@@ -127,8 +129,13 @@ begin
 		end if;
 	end process;
 	
-	strike_atual <= strike_buff(2) when (jogada_at = "01" or jogada_at = "10") else strike_buff(1) when jogada_at = "11" else strike_buff(0);
-	spare_atual <= spare_buff(1) when jogada_at = "01" else spare_buff(0);
+	strike_atual <= strike_buff(2) 		when jogada_ant = "11" 
+						 else strike_buff(1) when jogada_ant = "10" 
+						 else strike_buff(0);
+						 
+	spare_atual <= spare_buff(1) when jogada_ant = "11" 
+										  else spare_buff(0);
+										  
 	acabou <= prox_jog;
 	jogada_atual <= jogada_at;
 	
