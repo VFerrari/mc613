@@ -8,7 +8,7 @@ entity clk_div is
   port (
     clk : in std_logic;
 	 en  : in std_logic;
-    clk_lento : out std_logic
+    clk_lento : out std_logic := '1'
   );
 end clk_div;
 
@@ -28,6 +28,7 @@ begin
 				end if;
 			else
 				contador := 0;
+				clk_lento <= '1';
 			end if;
 		
 		end if;

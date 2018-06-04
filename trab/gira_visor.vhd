@@ -7,14 +7,14 @@ entity gira_visor is
 		clk		: in std_logic;
 		strike	: in std_logic;
 		spare		: in std_logic;
-		gira_stop: out std_logic;
+		gira_stop: out std_logic := '1';
 		seg_gira : out std_logic_vector(6 downto 0)
   );
 end gira_visor;
 
 architecture behavioral of gira_visor is
 
-signal clk_2seg : std_logic;
+signal clk_2seg : std_logic := '1';
 signal clk_1dseg: std_logic;
 signal sos      : std_logic;
 type seg_atual_type is (A, B, C, D, E, F, G);
@@ -24,20 +24,8 @@ begin
 
 	sos <= strike or spare;
 	
-	DIV1: clk_div generic map (99999999) port map(clk , sos , clk_2seg);
+	DIV1: clk_div generic map (99999999) port map(clk , sos , gira_stop);
 	DIV2: clk_div generic map (3500000) port map(clk , '1', clk_1dseg);
-	
-	process(clk)
-	begin
-		if (rising_edge(clk)) then
-			if(clk_2seg = '1') then
-				gira_stop <= '1';
-			else
-				gira_stop <= '0';
-			end if;
-		end if;
-	end process;
-	
 	
 	process(clk_1dseg)
 	begin

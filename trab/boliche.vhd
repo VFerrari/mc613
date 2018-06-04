@@ -22,7 +22,7 @@ signal avanca : std_logic;
 
 -- Sinais de jogo
 signal n_jog : std_logic_vector(2 downto 0);
-signal pontos			 : vetor_pontos := ("000000000", "000101010", "100000000", "100101100", "000010101", "000000000","001010000");
+signal pontos			 : vetor_pontos;
 signal jogs				 : vetor_jogs;
 signal pos_pontos		 : vetor_pontos;
 
@@ -83,13 +83,13 @@ begin
 	
 	-- Final
 	fim:  final 		  port map(CLOCK_50, 
-										  secao(2), 		-- Enable
-										  not(KEY(0)), 	-- Reset
-										  n_jog, 			-- Numero de jogadores
-										  jogs, 				-- Jogadores (ordenados por posicao)
-										  pos_pontos, 		-- Pontos (em ordem decrescente)
-										  pontos_d, 		-- Pontos de um jogador (Display)
-										  disp_jog_fim);	-- Jogador correspondente a pontuacao (Display)
+										  secao(2) and para_de_girar, 		-- Enable
+										  not(KEY(0)), 							-- Reset
+										  n_jog, 									-- Numero de jogadores
+										  jogs, 										-- Jogadores (ordenados por posicao)
+										  pos_pontos, 								-- Pontos (em ordem decrescente)
+										  pontos_d, 								-- Pontos de um jogador (Display)
+										  disp_jog_fim);							-- Jogador correspondente a pontuacao (Display)
 	
 	
 	-- Display
@@ -117,15 +117,17 @@ begin
 	
 	
 	-- LEDS
-	with jogs(1) select
-		leds_fim <= "000001" when "001",
-					   "000010" when "010",
-					   "000100" when "011",
-					   "001000" when "100",
-						"010000" when "101",
-					   "100000" when others;
+
+	-- LEDS finais
+	leds_fim(1) <= '1' when pos_pontos(1) = pontos(1) else '0';
+	leds_fim(2) <= '1' when pos_pontos(1) = pontos(2) else '0';
+	leds_fim(3) <= '1' when pos_pontos(1) = pontos(3) else '0';
+	leds_fim(4) <= '1' when pos_pontos(1) = pontos(4) else '0';
+	leds_fim(5) <= '1' when pos_pontos(1) = pontos(5) else '0';
+	leds_fim(6) <= '1' when pos_pontos(1) = pontos(6) else '0';
 	
 	LEDR <= ("000" & leds_meio & '0') when (secao(1) = '1') else 
 			  ("000" & leds_fim & '0')  when (secao(2) = '1') else "0000000000";
+	
 	
 end logica;
