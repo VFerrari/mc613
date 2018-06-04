@@ -2,7 +2,7 @@ library ieee ;
 use ieee.std_logic_1164.all ; 
 
 entity inicializador is
-port (CLOCK_50 : in std_logic;
+port (clk : in std_logic;
 		enable   : in std_logic;
 		confirma : in std_logic;
 		quant    : in std_logic_vector(5 downto 0);
@@ -38,9 +38,9 @@ begin
 							 "0000110" when others;
 							 
 							
-	process(CLOCK_50, enable, confirma, n_jog_select)
+	process(clk, enable, confirma, n_jog_select)
 	begin
-		if (rising_edge(CLOCK_50)) then
+		if (rising_edge(clk)) then
 			if (enable = '1' and confirma = '1' and n_jog_select /= "000") then
 			
 				n_jog <= n_jog_select;

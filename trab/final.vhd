@@ -5,7 +5,7 @@ use work.boliche_pack.all;
 use work.boliche_tipos.all;
 
 entity final is
-	port(clock       : in std_logic;
+	port(clk       : in std_logic;
 		  enable      : in std_logic;
 		  reset       : in std_logic;
 		  n_jog       : in std_logic_vector(2 downto 0);
@@ -29,8 +29,8 @@ signal indice       : natural range 0 to 6;
 
 begin
 
-	timing : clk_div generic map (119999999) port map(clock, enable, muda_placar);
-	ordem  : jogadores port map(clock, reset, muda_placar, n_jog, open, jog_buff);
+	timing : clk_div generic map (119999999) port map(clk, enable, muda_placar);
+	ordem  : jogadores port map(clk, reset, muda_placar, n_jog, open, jog_buff);
 	
 	jog_atual <= "001" when jog_buff = "000" else jog_buff;
 	
@@ -39,7 +39,7 @@ begin
 	pontos_atuais <= pontos(indice);
 	jog_pontos <= jogs(indice);
 
-	bcd				: conversor_bcd port map(clock, pontos_atuais, pontos_bcd);    
+	bcd				: conversor_bcd port map(clk, pontos_atuais, pontos_bcd);    
 	jog				: bin2dec port map('0' & jog_pontos, disp_jog); 
 	pont_menos_sig : bin2dec port map(pontos_bcd(3 downto 0), disp_pontos(2));
 	pont_meio_sig  : bin2dec port map(pontos_bcd(7 downto 4), disp_pontos(1));

@@ -4,8 +4,8 @@ use ieee.std_logic_1164.all ;
 entity controle is
 port(clk  : in std_logic;
 	  reset: in std_logic;
-	  w    : in std_logic;
-	  z    : out std_logic_vector(2 downto 0)
+	  avanca    : in std_logic;
+	  secao    : out std_logic_vector(2 downto 0)
 	 );
 
 end controle;
@@ -22,7 +22,7 @@ begin
 	process(clk)
 	begin
 		if (rising_edge(clk)) then
-			troca <= reset or w;
+			troca <= reset or avanca;
 		end if;
 	end process;
 	
@@ -46,6 +46,6 @@ begin
 		end if;
 	end process;
 	
-	z <= "001" when estado = inicio else "010" when estado = meio else "100";
+	secao <= "001" when estado = inicio else "010" when estado = meio else "100";
 
 end comportamento;

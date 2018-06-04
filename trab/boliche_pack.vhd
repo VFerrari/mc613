@@ -4,7 +4,7 @@ use work.boliche_tipos.all;
 
 package boliche_pack is
 	component inicializador is
-		port (CLOCK_50  :in std_logic;
+		port (clk  :in std_logic;
 				enable    :in std_logic;
 				confirma  :in std_logic;
 				quant     :in std_logic_vector(5 downto 0);
@@ -33,7 +33,7 @@ package boliche_pack is
 	end component;
 	
 	component final is
-	port(clock       : in std_logic;
+	port(clk       : in std_logic;
 		  enable      : in std_logic;
 		  reset       : in std_logic;
 		  n_jog       : in std_logic_vector(2 downto 0);
@@ -53,10 +53,10 @@ package boliche_pack is
 	end component; 
 	
 	component controle is
-		port(clk  : in std_logic;
-			  reset: in std_logic;
-			  w    : in std_logic;
-			  z    : out std_logic_vector(2 downto 0)
+		port(clk  	: in std_logic;
+			  reset	: in std_logic;
+			  avanca : in std_logic;
+			  secao  : out std_logic_vector(2 downto 0)
 			 );
 	end component;
 	
