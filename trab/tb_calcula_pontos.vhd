@@ -14,6 +14,7 @@ signal turno       :  std_logic_vector(3 downto 0);
 signal jog_atual	:  std_logic_vector(2 downto 0);
 signal pontos_jog	:  std_logic_vector(8 downto 0);
 signal jogada_atual:  std_logic_vector(1 downto 0);
+signal strike, spare : std_logic;
 signal acabou 		:  std_logic;
 
 begin
@@ -22,7 +23,7 @@ begin
 		clk <= not(clk) after 50 ps;
 	end process;
 
-	calc : calcula_pontos port map(clk, '1', '0', botao, pinos, turno, jog_atual, "100000000", pontos_jog, jogada_atual, acabou);
+	calc : calcula_pontos port map(clk, '1', '0', botao, pinos, turno, jog_atual, "000000000", pontos_jog, jogada_atual, strike, spare, acabou);
 	
 	process
 	begin
@@ -58,13 +59,24 @@ begin
 		botao <= '1';
 
 		wait for 2 ns;
-		pinos <= "0000001110";
+		pinos <= "1111111111";
 		turno <= "0011";
 		jog_atual <= "001";
 		botao <= '0';
 		
 		wait for 2 ns;
 		botao <= '1';
+		
+		wait for 2 ns;
+		botao <= '0';
+		pinos <= "0101010101";
+		jog_atual <= "010";
+		
+		wait for 2 ns;
+		botao <= '1';
+		
+		wait for 2 ns;
+		botao <= '0';
 		
 		wait;		
 	end process;
